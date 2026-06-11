@@ -1,3 +1,1 @@
- 11 Light 700 
- 10 Water 300 
- 11 Gas 900 
+U001|Electricity Bills|2000

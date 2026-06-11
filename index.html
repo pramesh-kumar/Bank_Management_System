@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bank Management System - Visual Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f1117; color: #e0e0e0; padding: 30px; }
+  h1 { text-align: center; color: #61dafb; font-size: 28px; margin-bottom: 6px; }
+  .subtitle { text-align: center; color: #888; margin-bottom: 40px; font-size: 14px; }
+
+  h2 { color: #61dafb; font-size: 16px; margin-bottom: 14px; border-left: 3px solid #61dafb; padding-left: 10px; }
+
+  .section { background: #1a1d27; border-radius: 12px; padding: 24px; margin-bottom: 30px; border: 1px solid #2a2d3a; }
+
+  /* ── FILE STRUCTURE ── */
+  .file-tree { font-family: monospace; font-size: 14px; line-height: 2; }
+  .file-tree .folder { color: #ffd700; }
+  .file-tree .file-cpp { color: #61dafb; }
+  .file-tree .file-txt { color: #98d982; }
+  .file-tree .file-make { color: #ff9f43; }
+  .file-tree .desc { color: #888; font-size: 12px; margin-left: 10px; }
+
+  /* ── STRUCT BOX ── */
+  .struct-box { background: #12141e; border: 2px solid #61dafb; border-radius: 10px; padding: 16px; width: 280px; }
+  .struct-title { color: #61dafb; font-weight: bold; font-size: 15px; margin-bottom: 10px; text-align: center; border-bottom: 1px solid #2a2d3a; padding-bottom: 8px; }
+  .field { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid #1e2030; }
+  .field:last-child { border-bottom: none; }
+  .field-type { color: #c792ea; font-family: monospace; font-size: 12px; width: 55px; }
+  .field-name { color: #e0e0e0; font-family: monospace; font-size: 13px; }
+  .field-icon { font-size: 16px; }
+
+  /* ── FLOW ── */
+  .flow-row { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+  .flow-box { background: #12141e; border: 1.5px solid #444; border-radius: 8px; padding: 10px 16px; font-size: 13px; text-align: center; min-width: 120px; }
+  .flow-box.main-box  { border-color: #ffd700; color: #ffd700; }
+  .flow-box.menu-box  { border-color: #ff9f43; color: #ff9f43; }
+  .flow-box.func-box  { border-color: #61dafb; color: #61dafb; }
+  .flow-box.file-box  { border-color: #98d982; color: #98d982; }
+  .flow-box.auth-box  { border-color: #ff6b6b; color: #ff6b6b; }
+  .arrow { color: #555; font-size: 20px; padding: 0 6px; }
+  .arrow.down { display: block; text-align: center; font-size: 18px; color: #555; margin: 4px auto; }
+
+  /* ── FUNCTION CARDS ── */
+  .func-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .func-card { background: #12141e; border-radius: 10px; padding: 16px; border-left: 4px solid #61dafb; }
+  .func-card.red    { border-left-color: #ff6b6b; }
+  .func-card.green  { border-left-color: #98d982; }
+  .func-card.orange { border-left-color: #ff9f43; }
+  .func-card.purple { border-left-color: #c792ea; }
+  .func-card.yellow { border-left-color: #ffd700; }
+  .func-name { font-family: monospace; font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 8px; }
+  .func-step { font-size: 12px; color: #aaa; margin: 3px 0; display: flex; gap: 6px; }
+  .func-step span { color: #555; }
+
+  /* ── REWRITE DB DIAGRAM ── */
+  .db-flow { display: flex; align-items: stretch; gap: 0; }
+  .db-col { display: flex; flex-direction: column; align-items: center; }
+  .db-file { background: #12141e; border: 1.5px solid #98d982; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 12px; min-width: 140px; }
+  .db-file .row { padding: 3px 0; border-bottom: 1px solid #1e2030; color: #aaa; }
+  .db-file .row:last-child { border-bottom: none; }
+  .db-file .row.highlight { color: #61dafb; background: #1a2a3a; border-radius: 4px; padding: 3px 6px; }
+  .db-file .row.deleted   { color: #ff6b6b; text-decoration: line-through; opacity: 0.5; }
+  .db-file .row.updated   { color: #98d982; }
+  .db-label { font-size: 11px; color: #888; margin-top: 6px; }
+  .db-arrow { display: flex; align-items: center; padding: 0 12px; color: #555; font-size: 22px; }
+
+  /* ── TEST SECTION ── */
+  .test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .test-card { background: #12141e; border-radius: 8px; padding: 14px; }
+  .test-name { font-size: 13px; font-weight: bold; color: #ffd700; margin-bottom: 8px; }
+  .test-step { font-size: 12px; color: #aaa; margin: 3px 0; }
+  .pass { color: #98d982; font-weight: bold; }
+
+  /* ── ATM FLOW ── */
+  .atm-box { background: #12141e; border: 1.5px solid #ff6b6b; border-radius: 10px; padding: 16px; max-width: 340px; }
+  .atm-title { color: #ff6b6b; font-weight: bold; margin-bottom: 12px; }
+  .atm-step { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #1e2030; }
+  .atm-step:last-child { border-bottom: none; }
+  .atm-num { background: #ff6b6b; color: #000; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0; }
+  .atm-ok  { color: #98d982; font-size: 11px; }
+  .atm-fail { color: #ff6b6b; font-size: 11px; }
+
+  .two-col { display: flex; gap: 24px; flex-wrap: wrap; }
+  .two-col > * { flex: 1; min-width: 260px; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #aaa; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>🏦 Bank Management System</h1>
+<p class="subtitle">Visual guide to how the code works — bank_management.cpp</p>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 1. FILE STRUCTURE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>📁 Project Structure</h2>
+  <div class="file-tree">
+    <div><span class="folder">Bank_Management_System/</span></div>
+    <div>&nbsp;&nbsp;├── <span class="file-cpp">bank_management.cpp</span> <span class="desc">← main app (all features, menus, logic)</span></div>
+    <div>&nbsp;&nbsp;├── <span class="file-cpp">test_bank_management.cpp</span> <span class="desc">← unit tests (proves code works)</span></div>
+    <div>&nbsp;&nbsp;├── <span class="file-make">Makefile</span> <span class="desc">← build commands (make / make test)</span></div>
+    <div>&nbsp;&nbsp;├── <span class="file-txt">bank.txt</span> <span class="desc">← database (created when you add accounts)</span></div>
+    <div>&nbsp;&nbsp;└── <span class="file-txt">bill.txt</span> <span class="desc">← bill payment logs</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 2. ACCOUNT STRUCT -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🧱 Account Struct — The Data Box</h2>
+  <div style="display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start;">
+    <div class="struct-box">
+      <div class="struct-title">struct Account</div>
+      <div class="field"><span class="field-icon">🪪</span><span class="field-type">string</span><span class="field-name">id</span></div>
+      <div class="field"><span class="field-icon">👤</span><span class="field-type">string</span><span class="field-name">name</span></div>
+      <div class="field"><span class="field-icon">👨</span><span class="field-type">string</span><span class="field-name">fname</span></div>
+      <div class="field"><span class="field-icon">🏠</span><span class="field-type">string</span><span class="field-name">address</span></div>
+      <div class="field"><span class="field-icon">🔢</span><span class="field-type">string</span><span class="field-name">pin</span></div>
+      <div class="field"><span class="field-icon">🔒</span><span class="field-type">string</span><span class="field-name">pass</span></div>
+      <div class="field"><span class="field-icon">📱</span><span class="field-type">string</span><span class="field-name">phone</span></div>
+      <div class="field"><span class="field-icon">💰</span><span class="field-type">float</span><span class="field-name">balance</span></div>
+    </div>
+    <div style="flex:1; min-width:220px;">
+      <p style="color:#aaa; font-size:13px; line-height:1.9;">
+        A <strong style="color:#61dafb;">struct</strong> is just a box that groups related data together.<br><br>
+        Instead of having 8 separate variables floating around, you put them all in one <code style="color:#61dafb;">Account</code> object.<br><br>
+        When you pass an account to a function, you pass <strong style="color:#fff;">one thing</strong> — not 8.<br><br>
+        In <strong style="color:#ff9f43;">bank.txt</strong>, each line = one Account:
+      </p>
+      <div style="background:#12141e; border-radius:8px; padding:12px; margin-top:12px; font-family:monospace; font-size:12px; color:#98d982;">
+        U001 Alice Bob Mumbai 12345 pass1 9876543210 5000.00<br>
+        U002 Dave Smith Delhi  99887 pass2 9123456789 1200.50
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 3. PROGRAM FLOW -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🔄 Program Flow — How Control Moves</h2>
+  <div style="overflow-x:auto;">
+
+    <!-- Row 1: main -->
+    <div style="text-align:center; margin-bottom:4px;">
+      <div class="flow-box main-box" style="display:inline-block;">main()</div>
+    </div>
+    <div class="arrow down">↓</div>
+
+    <!-- Row 2: two menus -->
+    <div style="display:flex; justify-content:center; gap:40px; margin-bottom:4px; flex-wrap:wrap;">
+      <div class="flow-box menu-box">bankMenu()</div>
+      <div class="flow-box menu-box">atmMenu()</div>
+    </div>
+    <div class="arrow down">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+
+    <!-- Row 3: functions -->
+    <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:4px;">
+      <div class="flow-box func-box" style="font-size:11px;">createAccount()</div>
+      <div class="flow-box func-box" style="font-size:11px;">deposit()</div>
+      <div class="flow-box func-box" style="font-size:11px;">withdraw()</div>
+      <div class="flow-box func-box" style="font-size:11px;">transfer()</div>
+      <div class="flow-box func-box" style="font-size:11px;">payBill()</div>
+      <div class="flow-box func-box" style="font-size:11px;">editAccount()</div>
+      <div class="flow-box func-box" style="font-size:11px;">deleteAccount()</div>
+      <div class="flow-box auth-box" style="font-size:11px;">atmWithdraw()</div>
+    </div>
+    <div class="arrow down">↓</div>
+
+    <!-- Row 4: core helpers -->
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:4px;">
+      <div class="flow-box" style="border-color:#c792ea; color:#c792ea; font-size:12px;">findAccount()</div>
+      <div class="flow-box" style="border-color:#c792ea; color:#c792ea; font-size:12px;">rewriteDB()</div>
+      <div class="flow-box" style="border-color:#c792ea; color:#c792ea; font-size:12px;">readAccount()</div>
+      <div class="flow-box" style="border-color:#c792ea; color:#c792ea; font-size:12px;">writeAccount()</div>
+    </div>
+    <div class="arrow down">↓</div>
+
+    <!-- Row 5: files -->
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+      <div class="flow-box file-box">bank.txt</div>
+      <div class="flow-box file-box">bill.txt</div>
+    </div>
+
+  </div>
+
+  <div class="legend" style="margin-top:20px;">
+    <div class="legend-item"><div class="legend-dot" style="background:#ffd700;"></div> Entry point</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff9f43;"></div> Menu loops</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#61dafb;"></div> Feature functions</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c792ea;"></div> Helper functions (reused)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#98d982;"></div> Storage files</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b;"></div> ATM (needs auth)</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 4. HOW rewriteDB WORKS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>💾 How rewriteDB() Works — Update & Delete</h2>
+  <p style="color:#aaa; font-size:13px; margin-bottom:16px;">You can't edit one line in the middle of a text file. So we use the temp-file-swap trick:</p>
+
+  <div class="two-col">
+
+    <!-- UPDATE example -->
+    <div>
+      <p style="color:#98d982; font-size:13px; margin-bottom:10px; font-weight:bold;">📝 UPDATE (e.g. deposit to U002)</p>
+      <div class="db-flow">
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">bank.txt (before)</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row highlight">U002 Dave ... 1200</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">original file</div>
+        </div>
+        <div class="db-arrow">→</div>
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">temp.txt</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row updated">U002 Dave ... 1700 ✓</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">temp file</div>
+        </div>
+        <div class="db-arrow">→</div>
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">bank.txt (after)</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row updated">U002 Dave ... 1700</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">renamed from temp</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE example -->
+    <div>
+      <p style="color:#ff6b6b; font-size:13px; margin-bottom:10px; font-weight:bold;">🗑️ DELETE (e.g. delete U002)</p>
+      <div class="db-flow">
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">bank.txt (before)</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row highlight">U002 Dave ... 1200</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">original file</div>
+        </div>
+        <div class="db-arrow">→</div>
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">temp.txt</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row deleted">U002 Dave ... 1200</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">U002 skipped</div>
+        </div>
+        <div class="db-arrow">→</div>
+        <div class="db-col">
+          <div class="db-file">
+            <div style="color:#888; font-size:11px; margin-bottom:4px;">bank.txt (after)</div>
+            <div class="row">U001 Alice ... 5000</div>
+            <div class="row">U003 Sara ... 3000</div>
+          </div>
+          <div class="db-label">renamed from temp</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 5. FUNCTION CARDS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>⚙️ What Each Function Does — Step by Step</h2>
+  <div class="func-grid">
+
+    <div class="func-card green">
+      <div class="func-name">createAccount()</div>
+      <div class="func-step"><span>1.</span> Ask user for all fields</div>
+      <div class="func-step"><span>2.</span> Call findAccount() to check duplicate</div>
+      <div class="func-step"><span>3.</span> If no duplicate → write to bank.txt</div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-name">deposit()</div>
+      <div class="func-step"><span>1.</span> Ask for ID and amount</div>
+      <div class="func-step"><span>2.</span> Check amount > 0</div>
+      <div class="func-step"><span>3.</span> findAccount() → get current balance</div>
+      <div class="func-step"><span>4.</span> balance += amount</div>
+      <div class="func-step"><span>5.</span> rewriteDB() → save updated account</div>
+    </div>
+
+    <div class="func-card red">
+      <div class="func-name">withdraw()</div>
+      <div class="func-step"><span>1.</span> Ask for ID and amount</div>
+      <div class="func-step"><span>2.</span> Check amount > 0</div>
+      <div class="func-step"><span>3.</span> findAccount() → check balance</div>
+      <div class="func-step"><span>4.</span> If amount > balance → STOP ✗</div>
+      <div class="func-step"><span>5.</span> balance -= amount → rewriteDB()</div>
+    </div>
+
+    <div class="func-card orange">
+      <div class="func-name">transfer()</div>
+      <div class="func-step"><span>1.</span> Ask sender ID, receiver ID, amount</div>
+      <div class="func-step"><span>2.</span> findAccount() for both</div>
+      <div class="func-step"><span>3.</span> Check sender has enough balance</div>
+      <div class="func-step"><span>4.</span> sender.balance -= amount</div>
+      <div class="func-step"><span>5.</span> receiver.balance += amount</div>
+      <div class="func-step"><span>6.</span> rewriteDB() twice (one per account)</div>
+    </div>
+
+    <div class="func-card purple">
+      <div class="func-name">payBill()</div>
+      <div class="func-step"><span>1.</span> Ask ID, bill name, amount</div>
+      <div class="func-step"><span>2.</span> findAccount() → check balance</div>
+      <div class="func-step"><span>3.</span> balance -= amount → rewriteDB()</div>
+      <div class="func-step"><span>4.</span> Log entry into bill.txt</div>
+    </div>
+
+    <div class="func-card yellow">
+      <div class="func-name">searchAccount()</div>
+      <div class="func-step"><span>1.</span> Ask for ID</div>
+      <div class="func-step"><span>2.</span> findAccount() → get data</div>
+      <div class="func-step"><span>3.</span> Print details</div>
+      <div class="func-step"><span>4.</span> ⚠️ PIN/password NOT printed</div>
+    </div>
+
+    <div class="func-card">
+      <div class="func-name">editAccount()</div>
+      <div class="func-step"><span>1.</span> Ask for ID → findAccount()</div>
+      <div class="func-step"><span>2.</span> Ask for new values</div>
+      <div class="func-step"><span>3.</span> rewriteDB() with updated account</div>
+    </div>
+
+    <div class="func-card red">
+      <div class="func-name">deleteAccount()</div>
+      <div class="func-step"><span>1.</span> Ask for ID → findAccount()</div>
+      <div class="func-step"><span>2.</span> rewriteDB(id, nullptr)</div>
+      <div class="func-step"><span>3.</span> nullptr = skip that record = deleted</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 6. ATM AUTHENTICATE FLOW -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🏧 ATM — authenticate() Flow</h2>
+  <div class="two-col">
+    <div class="atm-box">
+      <div class="atm-title">authenticate() — called before every ATM action</div>
+      <div class="atm-step">
+        <div class="atm-num">1</div>
+        <div>Ask: User ID, PIN, Password</div>
+      </div>
+      <div class="atm-step">
+        <div class="atm-num">2</div>
+        <div>findAccount(id) → does it exist?<br>
+          <span class="atm-fail">No → "Account not found" → STOP</span>
+        </div>
+      </div>
+      <div class="atm-step">
+        <div class="atm-num">3</div>
+        <div>Does pin match AND password match?<br>
+          <span class="atm-fail">No → "Invalid PIN or Password" → STOP</span>
+        </div>
+      </div>
+      <div class="atm-step">
+        <div class="atm-num">4</div>
+        <div><span class="atm-ok">✓ Return true → proceed to action</span></div>
+      </div>
+    </div>
+    <div style="font-size:13px; color:#aaa; line-height:2;">
+      <p style="color:#fff; margin-bottom:8px;">Why is ATM separate from Bank Management?</p>
+      <p>Bank Management = admin panel (no login needed)</p>
+      <p>ATM = customer self-service (needs 3-factor check)</p>
+      <br>
+      <p>The authenticate() function is reused by both:</p>
+      <p style="color:#61dafb;">• atmCheckBalance()</p>
+      <p style="color:#61dafb;">• atmWithdraw()</p>
+      <br>
+      <p>This avoids writing the same login check twice — <span style="color:#98d982;">DRY principle</span> (Don't Repeat Yourself)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 7. UNIT TESTS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🧪 Unit Tests — test_bank_management.cpp</h2>
+  <p style="color:#aaa; font-size:13px; margin-bottom:16px;">Each test: <strong style="color:#fff;">reset DB → set up data → run operation → check result</strong></p>
+  <div class="test-grid">
+
+    <div class="test-card">
+      <div class="test-name">testCreateAndFind()</div>
+      <div class="test-step">→ Create account U1 (Alice, 1000)</div>
+      <div class="test-step">→ findAccount("U1") → must return true</div>
+      <div class="test-step">→ balance must be 1000.0</div>
+      <div class="test-step">→ findAccount("NONE") → must return false</div>
+      <div class="test-step pass">✓ 3 checks</div>
+    </div>
+
+    <div class="test-card">
+      <div class="test-name">testDeposit()</div>
+      <div class="test-step">→ Create U2 (Bob, 500)</div>
+      <div class="test-step">→ Deposit 200</div>
+      <div class="test-step">→ Read back balance → must be 700</div>
+      <div class="test-step pass">✓ 1 check</div>
+    </div>
+
+    <div class="test-card">
+      <div class="test-name">testWithdraw()</div>
+      <div class="test-step">→ Create U3 (Carol, 300)</div>
+      <div class="test-step">→ Withdraw 100 → balance must be 200</div>
+      <div class="test-step">→ Check balance &lt; 500 (overdraft blocked)</div>
+      <div class="test-step pass">✓ 2 checks</div>
+    </div>
+
+    <div class="test-card">
+      <div class="test-name">testTransfer()</div>
+      <div class="test-step">→ Create U4 (Dave, 1000) + U5 (Eve, 200)</div>
+      <div class="test-step">→ Transfer 300 from U4 to U5</div>
+      <div class="test-step">→ U4 balance must be 700</div>
+      <div class="test-step">→ U5 balance must be 500</div>
+      <div class="test-step pass">✓ 2 checks</div>
+    </div>
+
+    <div class="test-card">
+      <div class="test-name">testDelete()</div>
+      <div class="test-step">→ Create U6 (Frank, 100)</div>
+      <div class="test-step">→ Delete U6</div>
+      <div class="test-step">→ findAccount("U6") → must return false</div>
+      <div class="test-step pass">✓ 1 check</div>
+    </div>
+
+  </div>
+  <div style="margin-top:16px; background:#12141e; border-radius:8px; padding:14px; font-family:monospace; font-size:13px;">
+    <span style="color:#98d982;">make test</span> &nbsp;→&nbsp;
+    <span style="color:#aaa;">Passed: </span><span style="color:#98d982;">9</span> &nbsp;
+    <span style="color:#aaa;">Failed: </span><span style="color:#ff6b6b;">0</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- 8. DEPOSIT FULL TRACE -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2>🔍 Full Trace — What happens when user deposits money</h2>
+  <div style="font-size:13px; line-height:1.6;">
+    <div style="display:flex; flex-direction:column; gap:6px; max-width:600px;">
+      <div style="background:#12141e; border-left:3px solid #ffd700; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#ffd700;">main()</span> — user picks "1. Bank Management"
+      </div>
+      <div style="padding-left:20px; color:#555;">↓</div>
+      <div style="background:#12141e; border-left:3px solid #ff9f43; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#ff9f43;">bankMenu()</span> — user picks "3. Deposit"
+      </div>
+      <div style="padding-left:20px; color:#555;">↓</div>
+      <div style="background:#12141e; border-left:3px solid #61dafb; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#61dafb;">deposit()</span> — asks "User ID:" → <span style="color:#fff;">U001</span> &nbsp; "Amount:" → <span style="color:#fff;">500</span>
+      </div>
+      <div style="padding-left:20px; color:#555;">↓ check: amount > 0 ✓</div>
+      <div style="background:#12141e; border-left:3px solid #c792ea; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#c792ea;">findAccount("U001")</span> — opens bank.txt, reads line by line, finds U001, copies into Account a
+      </div>
+      <div style="padding-left:20px; color:#555;">↓ a.balance = 5000</div>
+      <div style="background:#12141e; border-left:3px solid #61dafb; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#61dafb;">deposit()</span> — a.balance += 500 → now <span style="color:#98d982;">a.balance = 5500</span>
+      </div>
+      <div style="padding-left:20px; color:#555;">↓</div>
+      <div style="background:#12141e; border-left:3px solid #c792ea; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#c792ea;">rewriteDB("U001", &a)</span> — reads all accounts, writes them to temp.txt, replaces U001 line with new balance, renames temp.txt → bank.txt
+      </div>
+      <div style="padding-left:20px; color:#555;">↓</div>
+      <div style="background:#12141e; border-left:3px solid #98d982; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#98d982;">bank.txt updated</span> — U001 now shows balance 5500 ✓
+      </div>
+      <div style="padding-left:20px; color:#555;">↓</div>
+      <div style="background:#12141e; border-left:3px solid #ff9f43; padding:10px 14px; border-radius:0 6px 6px 0;">
+        <span style="color:#ff9f43;">bankMenu()</span> — prints "Deposited. New balance: 5500" → loops back to show menu again
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

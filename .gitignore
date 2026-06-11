@@ -1,0 +1,15 @@
+# Compiled binaries
+bank_app
+test_bank_management
+
+# Runtime data files
+bank.txt
+bill.txt
+temp.txt
+
+# Keep index.html (Vercel entry point)
+!index.html
+
+# OS files
+.DS_Store
+Thumbs.db
