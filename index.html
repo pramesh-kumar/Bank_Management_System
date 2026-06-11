@@ -54,7 +54,6 @@
   .func-step span { color: #555; }
 
   /* ── REWRITE DB DIAGRAM ── */
-  .db-flow { display: flex; align-items: stretch; gap: 0; }
   .db-col { display: flex; flex-direction: column; align-items: center; }
   .db-file { background: #12141e; border: 1.5px solid #98d982; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 12px; min-width: 140px; }
   .db-file .row { padding: 3px 0; border-bottom: 1px solid #1e2030; color: #aaa; }
@@ -82,7 +81,9 @@
   .atm-fail { color: #ff6b6b; font-size: 11px; }
 
   .two-col { display: flex; gap: 24px; flex-wrap: wrap; }
-  .two-col > * { flex: 1; min-width: 260px; }
+  .two-col > * { flex: 1; min-width: 320px; }
+
+  .db-flow { display: flex; align-items: stretch; flex-wrap: wrap; gap: 8px; }
 
   .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #aaa; }
